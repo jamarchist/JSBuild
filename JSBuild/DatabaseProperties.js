@@ -1,10 +1,6 @@
-﻿var properties = {
-
-    Profile: "Dev",
-    Client: "PMLA",
-
+﻿var databaseProperties = {
     DatabaseServer: "RGRAY7",
-    InitialCatalog: "Five",
+    DatabaseName: "Five",
     DatabaseUserName: "fivedev",
     DatabasePassword: "P@ssw0rd"
 };

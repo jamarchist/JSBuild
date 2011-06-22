@@ -16,7 +16,12 @@ namespace JSBuild.TaskMethods
 
         public Action<BoxedValue> GetAction()
         {
-            
+            return Dummy;
+        }
+
+        private void Dummy(BoxedValue x)
+        {
+            //
         }
     }
 }

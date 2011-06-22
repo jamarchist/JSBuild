@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using IronJS;
@@ -26,10 +27,25 @@ namespace JSBuild.TaskMethods
                     var process = new Process();
                     process.StartInfo.FileName = executable;
                     process.StartInfo.Arguments = arguments;
+                    
+                    
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.RedirectStandardInput = false;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.EnableRaisingEvents = true;
+                    process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
+
                     process.Start();
+                    process.BeginOutputReadLine();
                     process.WaitForExit();
 
-                    return TypeConverter.ToBoxedValue(Convert.ToDouble(process.ExitCode));
+                    var exitCode = Convert.ToDouble(process.ExitCode);
+                    
+                    process.Close();
+
+                    return TypeConverter.ToBoxedValue(exitCode);
                 });
 
             return func;

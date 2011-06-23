@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 using IronJS;
-using JSBuild;
 using JSBuild.Utility;
 
 namespace JSBuild.TaskMethods
@@ -36,7 +31,7 @@ namespace JSBuild.TaskMethods
                     process.StartInfo.RedirectStandardOutput = true;
                     process.EnableRaisingEvents = true;
                     process.OutputDataReceived += (sender, e) => { Console.ResetColor(); Console.WriteLine(e.Data); };
-                    process.ErrorDataReceived += (sender, e) => { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine(e.Data); };
+                    process.ErrorDataReceived += (sender, e) => { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine(e.Data); Console.ResetColor(); };
 
                     process.Start();
                     process.BeginOutputReadLine();
@@ -44,9 +39,6 @@ namespace JSBuild.TaskMethods
                     process.WaitForExit();
 
                     var exitCode = Convert.ToDouble(process.ExitCode);
-                    Console.WriteLine("PROCESS USER:");
-                    Console.WriteLine(process.StartInfo.UserName);
-                    
                     process.Close();
 
                     return TypeConverter.ToBoxedValue(exitCode);

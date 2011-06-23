@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using IronJS;
 using JSBuild.TaskMethods;
@@ -16,16 +15,10 @@ namespace JSBuild
             var jsContext = new IronJS.Hosting.CSharp.Context();
             jsContext.CreatePrintFunction();
 
-            // Global Functions (in this case, 'include' and 'call' have the same implementation)
-            var include = new Include(jsContext);
-            var includeFunction = include.GetAction();
-            var nativeInclude = IronJS.Native.Utils.CreateFunction(jsContext.Environment, 1, includeFunction);
-            jsContext.SetGlobal(include.MethodName, nativeInclude);
-            jsContext.SetGlobal("call", nativeInclude);
-
             // Task Methods
             var jsbuild = jsContext.Environment.NewObject();
-            RegisterTaskMethods(jsbuild);
+            RegisterTaskMethodsWithContext(jsbuild, jsContext);
+            RegisterSimpleTaskMethods(jsbuild);
             jsContext.SetGlobal("JSBuild", jsbuild);
 
             // Execute the specified file, defaulting to 'Default.js'
@@ -34,10 +27,20 @@ namespace JSBuild
             Console.ReadKey();
         }
 
-        private static void RegisterTaskMethods(CommonObject jsbuild)
+        private static void RegisterTaskMethodsWithContext(CommonObject jsbuild, IronJS.Hosting.CSharp.Context context)
         {
-            var buildActions = BuildAllSimple<IBuildAction>();
-            var buildFunctions = BuildAllSimple<IBuildFunction>();
+            RegisterTaskMethods(jsbuild, () => BuildAllRequiringContext<IBuildAction>(context), () => BuildAllRequiringContext<IBuildFunction>(context));
+        }
+
+        private static void RegisterSimpleTaskMethods(CommonObject jsbuild)
+        {
+            RegisterTaskMethods(jsbuild, () => BuildAllSimple<IBuildAction>(), () => BuildAllSimple<IBuildFunction>());
+        }
+
+        private static void RegisterTaskMethods(CommonObject jsbuild, Func<IEnumerable<IBuildAction>> createBuildActions, Func<IEnumerable<IBuildFunction>> createBuildFunctions)
+        {
+            var buildActions = createBuildActions();
+            var buildFunctions = createBuildFunctions();
 
             foreach (var nativeAction in buildActions)
             {
@@ -59,8 +62,18 @@ namespace JSBuild
 
         private static IEnumerable<T> BuildAllSimple<T>()
         {
-            return GetTypesImplementing<T>().Where(t => t.GetConstructor(Type.EmptyTypes) != null).Select(
-                t => Activator.CreateInstance(t)).Cast<T>();
+            return GetTypesImplementing<T>()
+                    .Where(t => t.GetConstructor(Type.EmptyTypes) != null)
+                    .Select(t => Activator.CreateInstance(t))
+                        .Cast<T>();
+        }
+
+        private static IEnumerable<T> BuildAllRequiringContext<T>(IronJS.Hosting.CSharp.Context context)
+        {
+            return GetTypesImplementing<T>()
+                    .Where(t => t.GetConstructor(new Type[] {typeof (IronJS.Hosting.CSharp.Context)}) != null)
+                    .Select(t => Activator.CreateInstance(t, context))
+                        .Cast<T>();
         }
     }
 }

@@ -9,8 +9,8 @@ namespace JSBuild.TaskMethods
     {
         public static void TaskFunction(BoxedValue options)
         {
-            var source = options.ComplexProperty("SourceFiles").ToArray<string>();
-            var destination = options.ComplexProperty("DestinationFiles").ToArray<string>();
+            var source = options.ComplexProperty("sources").ToArray<string>();
+            var destination = options.ComplexProperty("destinations").ToArray<string>();
 
             TaskFunction(source, destination);
         }

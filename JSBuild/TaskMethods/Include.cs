@@ -4,6 +4,9 @@ using IronJS.Hosting;
 
 namespace JSBuild.TaskMethods
 {
+    /// <summary>
+    /// Executes a script from another script.
+    /// </summary>
     public class Include : IBuildAction
     {
         private readonly CSharp.Context context;
@@ -13,7 +16,7 @@ namespace JSBuild.TaskMethods
             this.context = context;
         }
 
-        public string MethodName
+        public virtual string MethodName
         {
             get { return "include"; }
         }

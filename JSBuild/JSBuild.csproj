@@ -79,6 +79,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TaskMethods\Call.cs" />
+    <Compile Include="TaskMethods\GetFiles.cs" />
     <Compile Include="Utility\BoxedValueExtensions.cs" />
     <Compile Include="TaskMethods\Copy.cs" />
     <Compile Include="TaskMethods\Delete.cs" />
@@ -91,6 +93,9 @@
     <Compile Include="TaskMethods\Include.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CompileSolution.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Default.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -98,6 +103,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DatabaseProperties.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ExecuteSqlScripts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\MSBuild.js">

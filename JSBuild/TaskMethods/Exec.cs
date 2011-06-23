@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using IronJS;
 using JSBuild;
+using JSBuild.Utility;
 
 namespace JSBuild.TaskMethods
 {

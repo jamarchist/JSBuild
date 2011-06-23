@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using IronJS;
 
-namespace JSBuild
+namespace JSBuild.Utility
 {
     public static class BoxedValueExtensions
     {

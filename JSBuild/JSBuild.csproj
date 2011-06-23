@@ -79,7 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoxedValueExtensions.cs" />
+    <Compile Include="Utility\BoxedValueExtensions.cs" />
     <Compile Include="TaskMethods\Copy.cs" />
     <Compile Include="TaskMethods\Delete.cs" />
     <Compile Include="Program.cs" />
@@ -89,7 +89,6 @@
     <Compile Include="TaskMethods\IBuildFunction.cs" />
     <Compile Include="TaskMethods\IBuildMethod.cs" />
     <Compile Include="TaskMethods\Include.cs" />
-    <Compile Include="TaskMethods\Sql.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.js">

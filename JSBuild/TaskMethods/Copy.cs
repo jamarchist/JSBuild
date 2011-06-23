@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using IronJS;
+using JSBuild.Utility;
 
 namespace JSBuild.TaskMethods
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using IronJS;
+using JSBuild.Utility;
 
 namespace JSBuild.TaskMethods
 {

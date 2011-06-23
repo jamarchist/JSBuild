@@ -1,12 +1,12 @@
 ﻿include('Sql.js');
 include('MSBuild.js');
 
-(function ($, $$) {
+(function ($) {
     var scripts = ["TestQuery.sql", "TestQuery2.sql"];
-    $$.sql(scripts);
+    $.execute.sql(scripts);
 
-    $$.msbuild();
+    $.execute.msbuild();
 
     print('execution complete');
 
-})(JSBuild, CustomTasks);
+})(JSBuild);

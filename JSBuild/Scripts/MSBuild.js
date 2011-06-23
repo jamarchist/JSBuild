@@ -1,13 +1,17 @@
 ﻿//var CustomTasks = CustomTasks || {};
 
 (function ($) {
+    if (!$.execute) {
+        $.execute = {};
+    }
+
     include('SolutionProperties.js');
     include('StringExtensions.js');
 
     var sln = solutionProperties;
 
     // The 'msbuild' task. Runs MSBuild against a solution
-    CustomTasks.msbuild = function (options) {
+    $.execute.msbuild = function (options) {
         var formattedArgs = '{0} /p:Configuration={1};Platform={2}'.format(sln.SolutionFile, sln.Configuration, sln.Platform);
 
         $.exec({

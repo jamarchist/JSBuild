@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="TaskMethods\Call.cs" />
     <Compile Include="TaskMethods\GetFiles.cs" />
+    <Compile Include="TaskMethods\PathOf.cs" />
     <Compile Include="Utility\BoxedValueExtensions.cs" />
     <Compile Include="TaskMethods\Copy.cs" />
     <Compile Include="TaskMethods\Delete.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="TaskMethods\IBuildFunction.cs" />
     <Compile Include="TaskMethods\IBuildMethod.cs" />
     <Compile Include="TaskMethods\Include.cs" />
+    <Compile Include="Utility\PathExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CompileSolution.js">
@@ -108,18 +110,12 @@
     <Content Include="ExecuteSqlScripts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\MSBuild.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Scripts\msbuild-task.js" />
     <Content Include="SolutionProperties.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\Sql.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\StringExtensions.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Scripts\sql-task.js" />
+    <EmbeddedResource Include="Scripts\string-extensions.js" />
     <Content Include="TestQuery.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

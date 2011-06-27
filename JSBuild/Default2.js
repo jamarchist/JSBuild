@@ -1,10 +1,4 @@
-﻿
-
-(function ($) {
-
-    $.include('Scripts\\StringExtensions.js');
-    $.include('Scripts\\Sql.js');
-    $.include('Scripts\\MSBuild.js');
+﻿(function ($) {
 
     $.copy({
         sources: ['Default.js'],
@@ -13,6 +7,8 @@
 
     $.call('CompileSolution.js');
     $.call('ExecuteSqlScripts.js');
+
+    print($.pathOf('CompileSolution.js'));
 
     print('execution complete');
 

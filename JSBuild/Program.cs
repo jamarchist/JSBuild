@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using IronJS;
 using JSBuild.TaskMethods;
 using System.Linq;
+using JSBuild.Utility;
 
 namespace JSBuild
 {
@@ -21,10 +23,36 @@ namespace JSBuild
             RegisterSimpleTaskMethods(jsbuild);
             jsContext.SetGlobal("JSBuild", jsbuild);
 
+            // Automatically-included Scripts
+            RunEmbeddedScripts(jsContext);
+
             // Execute the specified file, defaulting to 'Default.js'
             jsContext.ExecuteFile(args.Length > 0 ? args[0] : "Default.js");
 
             Console.ReadKey();
+        }
+
+        private static void RunEmbeddedScripts(IronJS.Hosting.CSharp.Context context)
+        {
+            var jsbuild = Assembly.GetExecutingAssembly();
+            var resources = jsbuild.GetManifestResourceNames().Select(r => Path.GetFileName(r));
+
+            var extensions = resources.Where(r => r.ScriptName().EndsWith("-extensions"));
+            var tasks = resources.Where(r => r.ScriptName().EndsWith("-task"));
+
+            ExecuteScriptCode(extensions, jsbuild, context);
+            ExecuteScriptCode(tasks, jsbuild, context);
+        }
+
+        private static void ExecuteScriptCode(IEnumerable<string> codeFile, Assembly jsbuild, IronJS.Hosting.CSharp.Context context)
+        {
+            foreach (var file in codeFile)
+            {
+                var fileStream = jsbuild.GetManifestResourceStream(file);
+                var code = new StreamReader(fileStream).ReadToEnd();
+
+                context.Execute(code);
+            }
         }
 
         private static void RegisterTaskMethodsWithContext(CommonObject jsbuild, IronJS.Hosting.CSharp.Context context)

@@ -8,7 +8,7 @@ namespace JSBuild.TaskMethods
 {
     public class GetFiles : IBuildFunction
     {
-        private readonly IronJS.Hosting.CSharp.Context context;
+        private readonly CSharp.Context context;
 
         public GetFiles(CSharp.Context context)
         {
@@ -37,8 +37,7 @@ namespace JSBuild.TaskMethods
 
             var files = Directory.GetFiles(directoryPath, searchPattern, recurse);
 
-            var t = files.ToBoxedValue(context.Environment);
-            return t;
+            return files.ToBoxedValue(context.Environment);
         }
     }
 }

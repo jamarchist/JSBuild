@@ -44,8 +44,7 @@ namespace JSBuild.Utility
                 javascriptArray.Dense[arrayIndex] = descriptor;
             }
 
-            var v = TypeConverter.ToBoxedValue(javascriptArray);
-            return v;
+            return TypeConverter.ToBoxedValue(javascriptArray);
         }
 
         public static uint Unsigned(this int integer)

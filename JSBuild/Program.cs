@@ -26,10 +26,33 @@ namespace JSBuild
             // Automatically-included Scripts
             RunEmbeddedScripts(jsContext);
 
-            // Execute the specified file, defaulting to 'Default.js'
-            jsContext.ExecuteFile(args.Length > 0 ? args[0] : "Default.js");
-
-            Console.ReadKey();
+            if (args.Length > 0)
+            {
+                if (String.Compare(args[0], "-repl", true) != 0)
+                {
+                    // Execute the specified file, defaulting to 'Default.js'
+                    jsContext.ExecuteFile(args.Length > 0 ? args[0] : "Default.js");  
+                    Console.ReadKey();                    
+                }
+                else
+                {
+                    var shouldContinue = true;
+                    while (shouldContinue)
+                    {
+                        Console.Write("JSBuild> ");
+                        var userInput = Console.ReadLine();
+                        
+                        if (String.Compare(userInput, "exit", true) == 0)
+                        {
+                            shouldContinue = false;
+                        }
+                        else
+                        {
+                            jsContext.Execute(userInput);                            
+                        }
+                    }
+                }
+            }
         }
 
         private static void RunEmbeddedScripts(IronJS.Hosting.CSharp.Context context)

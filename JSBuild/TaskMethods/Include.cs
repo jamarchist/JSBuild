@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using IronJS;
 using IronJS.Hosting;
+using IronJS.Runtime;
 
 namespace JSBuild.TaskMethods
 {
@@ -10,6 +12,7 @@ namespace JSBuild.TaskMethods
     public class Include : IBuildAction
     {
         private readonly CSharp.Context context;
+        private static FunctionObject compile;
 
         public Include(CSharp.Context context)
         {
@@ -28,8 +31,25 @@ namespace JSBuild.TaskMethods
 
         private void IncludeAction(BoxedValue filename)
         {
+            if (compile == null)
+            {
+                context.Execute("var compile = function (src) { return CoffeeScript.compile(src, { bare: true }); };");
+                compile = this.context.GetGlobalAs<FunctionObject>("compile");
+            }
+
             var file = TypeConverter.ToString(filename);
-            context.ExecuteFile(file);
+            if (file.EndsWith("coffee"))
+            {
+                var coffeeCode = File.ReadAllText(file);
+                var boxedResult = compile.Call(context.Globals, coffeeCode);
+                var coffeeConvertedToJS = TypeConverter.ToString(boxedResult);
+
+                context.Execute(coffeeConvertedToJS);
+            }
+            else
+            {
+                context.ExecuteFile(file);                
+            }
         }
     }
 }

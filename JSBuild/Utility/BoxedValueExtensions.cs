@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using IronJS;
+using IronJS.Runtime;
 
 namespace JSBuild.Utility
 {
@@ -13,7 +14,7 @@ namespace JSBuild.Utility
 
         public static T[] ToArray<T>(this ArrayObject ecmaScriptObject)
         {
-            return ecmaScriptObject.Dense.Select(desc => IronJS.TypeConverter.ToClrObject(desc.Value)).Cast<T>().ToArray();    
+            return ecmaScriptObject.Dense.Select(desc => TypeConverter.ToClrObject(desc.Value)).Cast<T>().ToArray();    
         }
 
         public static T SimpleProperty<T>(this BoxedValue ecmaScriptObject, string propertyName)

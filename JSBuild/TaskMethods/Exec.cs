@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using IronJS;
+using IronJS.Runtime;
 using JSBuild.Utility;
 
 namespace JSBuild.TaskMethods

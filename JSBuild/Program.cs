@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using IronJS;
+using IronJS.Runtime;
 using JSBuild.TaskMethods;
 using System.Linq;
 using JSBuild.Utility;
@@ -13,46 +14,62 @@ namespace JSBuild
     {
         static void Main(string[] args)
         {
-            // Context Creation
-            var jsContext = new IronJS.Hosting.CSharp.Context();
-            jsContext.CreatePrintFunction();
-
-            // Task Methods
-            var jsbuild = jsContext.Environment.NewObject();
-            RegisterTaskMethodsWithContext(jsbuild, jsContext);
-            RegisterSimpleTaskMethods(jsbuild);
-            jsContext.SetGlobal("JSBuild", jsbuild);
-
-            // Automatically-included Scripts
-            RunEmbeddedScripts(jsContext);
-
-            if (args.Length > 0)
+            try
             {
-                if (String.Compare(args[0], "-repl", true) != 0)
+                // Context Creation
+                var jsContext = new IronJS.Hosting.CSharp.Context();
+                jsContext.CreatePrintFunction();
+
+                // Task Methods
+                var jsbuild = jsContext.Environment.NewObject();
+                RegisterTaskMethodsWithContext(jsbuild, jsContext);
+                RegisterSimpleTaskMethods(jsbuild);
+                jsContext.SetGlobal("JSBuild", jsbuild);
+
+                // Automatically-included Scripts
+                RunEmbeddedScripts(jsContext);
+
+                if (args.Length > 0)
                 {
-                    // Execute the specified file, defaulting to 'Default.js'
-                    jsContext.ExecuteFile(args.Length > 0 ? args[0] : "Default.js");  
-                    Console.ReadKey();                    
-                }
-                else
-                {
-                    var shouldContinue = true;
-                    while (shouldContinue)
+                    if (String.Compare(args[0], "-repl", true) != 0)
                     {
-                        Console.Write("JSBuild> ");
-                        var userInput = Console.ReadLine();
+                        // Execute the specified file, defaulting to 'Default.js'
+                        jsContext.ExecuteFile(args.Length > 0 ? args[0] : "Default.js");  
+                        Console.ReadKey();                    
+                    }
+                    else
+                    {
+                        var shouldContinue = true;
+                        while (shouldContinue)
+                        {
+                            Console.Write("JSBuild> ");
+                            var userInput = Console.ReadLine();
                         
-                        if (String.Compare(userInput, "exit", true) == 0)
-                        {
-                            shouldContinue = false;
-                        }
-                        else
-                        {
-                            jsContext.Execute(userInput);                            
+                            if (String.Compare(userInput, "exit", true) == 0)
+                            {
+                                shouldContinue = false;
+                            }
+                            else
+                            {
+                                jsContext.Execute(userInput);                            
+                            }
                         }
                     }
                 }
-            }
+                else
+                {
+                    jsContext.ExecuteFile("Default.js");
+                }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
         }
 
         private static void RunEmbeddedScripts(IronJS.Hosting.CSharp.Context context)

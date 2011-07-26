@@ -2,6 +2,7 @@
 using System.IO;
 using IronJS;
 using IronJS.Hosting;
+using IronJS.Runtime;
 using JSBuild.Utility;
 
 namespace JSBuild.TaskMethods

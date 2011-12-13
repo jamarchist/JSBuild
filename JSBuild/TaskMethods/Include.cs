@@ -44,7 +44,24 @@ namespace JSBuild.TaskMethods
                 var boxedResult = compile.Call(context.Globals, coffeeCode);
                 var coffeeConvertedToJS = TypeConverter.ToString(boxedResult);
 
-                context.Execute(coffeeConvertedToJS);
+                Console.WriteLine(coffeeConvertedToJS);
+
+                try
+                {
+                    context.Execute(coffeeConvertedToJS);
+                }
+                catch (IronJS.Error.Error error)
+                {
+                    Console.WriteLine(error.Message);
+                    Console.WriteLine(error.StackTrace);
+
+                    if (error.InnerException != null)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(error.InnerException.Message);
+                        Console.WriteLine(error.InnerException.StackTrace);
+                    }
+                }
             }
             else
             {

@@ -129,6 +129,8 @@
     <Compile Include="TaskMethods\Call.cs" />
     <Compile Include="TaskMethods\GetFiles.cs" />
     <Compile Include="TaskMethods\PathOf.cs" />
+    <Compile Include="TaskMethods\Read.cs" />
+    <Compile Include="TaskMethods\Save.cs" />
     <Compile Include="Utility\BoxedValueExtensions.cs" />
     <Compile Include="TaskMethods\Copy.cs" />
     <Compile Include="TaskMethods\Delete.cs" />
@@ -161,6 +163,7 @@
     <EmbeddedResource Include="Scripts\coffee-script-task.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Scripts\template-task.js" />
     <Content Include="SolutionProperties.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -175,6 +178,7 @@
     <None Include="example.coffee">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="fake.config.template" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
